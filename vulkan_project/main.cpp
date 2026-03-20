@@ -67,6 +67,7 @@ private:
     GLFWwindow* window;
     VkInstance instance;
     VkDebugUtilsMessengerEXT debugMessenger;
+    VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
 
     void initWindow() {
         glfwInit();
@@ -142,7 +143,7 @@ private:
 
     void pickPhysicalDevice() {
 
-        VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
+        
         //list num of gpus available
         uint32_t deviceCount = 0;
         vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
