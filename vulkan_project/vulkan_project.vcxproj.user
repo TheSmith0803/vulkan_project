@@ -3,4 +3,9 @@
   <PropertyGroup>
     <ShowAllFiles>true</ShowAllFiles>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(COMPUTERNAME)'=='ESMITH-LT1'">
+    <LocalDebuggerEnvironment>
+VK_LAYER_PATH=C:\VulkanSDK\vulkan-sdk-1.3.261.1\Bin\VkLayer_khronos_validation.json
+    </LocalDebuggerEnvironment>
+  </PropertyGroup>
 </Project>
