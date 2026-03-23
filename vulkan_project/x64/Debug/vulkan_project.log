@@ -1,2 +1,3 @@
 ﻿  main.cpp
-  vulkan_project.vcxproj -> C:\Repos\vulkan_project\x64\Debug\vulkan_project.exe
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+  vulkan_project.vcxproj -> C:\repos\vulkan_project\x64\Debug\vulkan_project.exe
