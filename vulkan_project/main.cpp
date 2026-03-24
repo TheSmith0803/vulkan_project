@@ -10,6 +10,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <optional>
 #include <stdexcept>
 #include <cstdlib>
 
@@ -142,6 +143,37 @@ private:
         pickPhysicalDevice();
     }
 
+    struct QueueFamilyIndices {
+        std::optional<uint32_t> graphicsFamily;
+
+        bool isComplete() {
+            return graphicsFamily.has_value();
+        }
+    };
+
+    QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device) {
+        QueueFamilyIndices indices;
+
+        uint32_t queueFamilyCount = 0;
+        vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, nullptr);
+
+        std::vector<VkQueueFamilyProperties> queueFamiles(queueFamilyCount);
+        vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, queueFamiles.data());
+
+        int i = 0;
+        for (const auto& queueFamily : queueFamiles) {
+            if (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT) {
+                indices.graphicsFamily = i;
+            }
+            if (indices.isComplete()) {
+                break;
+            }
+            i++;
+        }
+
+        return indices;
+    }
+
     void pickPhysicalDevice() {
 
         
@@ -176,7 +208,7 @@ private:
         
     }
 
-    bool rateDeviceSuitability(VkPhysicalDevice device) {
+    int rateDeviceSuitability(VkPhysicalDevice device) {
         VkPhysicalDeviceProperties deviceProperties;
         VkPhysicalDeviceFeatures deviceFeatures;
         vkGetPhysicalDeviceProperties(device, &deviceProperties);
@@ -192,6 +224,12 @@ private:
 
         if (!deviceFeatures.geometryShader) {
             return 0;
+        }
+
+        QueueFamilyIndices indices = findQueueFamilies(device);
+
+        if (!indices.isComplete()) {
+            throw std::runtime_error("GPU does not support all queue families!");
         }
 
         return score;
